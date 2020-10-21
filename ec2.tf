@@ -4,22 +4,22 @@ provider "aws" {
   region     = "ap-south-1"
 }
 
-resource "tls_private_key" "VerginiaKey" {
+resource "tls_private_key" "MumbaiKey" {
  algorithm = "RSA"
 }
 resource "aws_key_pair" "generated_key" {
- key_name = "VerginiaKey"
- public_key = "${tls_private_key.VerginiaKey.public_key_openssh}"
+ key_name = "MumbaiKey"
+ public_key = "${tls_private_key.MumbaiKey.public_key_openssh}"
  depends_on = [
-  tls_private_key.VerginiaKey
+  tls_private_key.MumbaiKey
  ]
 }
 resource "local_file" "key" {
- content = "${tls_private_key.VerginiaKey.private_key_pem}"
- filename = "VerginiaKey.pem"
+ content = "${tls_private_key.MumbaiKey.private_key_pem}"
+ filename = "MumbaiKey.pem"
  file_permission ="0400"
  depends_on = [
-  tls_private_key.VerginiaKey
+  tls_private_key.MumbaiKey
  ]
 }
 
@@ -35,7 +35,7 @@ resource "aws_vpc" "VPCAuomate" {
 
 resource "aws_security_group" "sg_automate" {
  name = "sg_automate"
- description = "This firewall allows SSH, HTTP and MYSQL"
+ description = "This firewall allows SSH"
  vpc_id = "${aws_vpc.VPCAuomate.id}"
  
  ingress {
